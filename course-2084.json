@@ -2,7 +2,7 @@
   "schema": 1,
   "courseId": 2084,
   "repository": "LearningOS/2026a-rustling-lizhikeer",
-  "commit": "4375d3a4361122a58b697083e5a528732102b093",
+  "commit": "b3abb260704b864b2190f52a5f3734bb54712b23",
   "score": 110,
   "totalScore": 110,
   "exercises": [
@@ -778,9 +778,9 @@
     }
   ],
   "student": "lizhikeer",
-  "runId": "39009838209",
+  "runId": "39013147342",
   "runAttempt": "1",
   "upload": {
-    "status": "accepted"
+    "status": "pending"
   }
 }
