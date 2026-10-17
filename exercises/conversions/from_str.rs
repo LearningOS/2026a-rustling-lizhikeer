@@ -54,24 +54,18 @@ impl FromStr for Person {
             return Err(ParsePersonError::Empty);
         }
 
-        let parts: Vec<&str> = s.split(',').collect();
-        if parts.len() != 2 {
+        let mut parts = s.split(',');
+        let name = parts.next().unwrap_or("");
+        let age = parts.next();
+        if age.is_none() || parts.next().is_some() {
             return Err(ParsePersonError::BadLen);
         }
-
-        let name = parts[0];
         if name.is_empty() {
             return Err(ParsePersonError::NoName);
         }
 
-        let age = parts[1]
-            .parse::<usize>()
-            .map_err(ParsePersonError::ParseInt)?;
-
-        Ok(Person {
-            name: name.to_string(),
-            age,
-        })
+        let age = age.unwrap().parse::<usize>().map_err(ParsePersonError::ParseInt)?;
+        Ok(Person { name: name.to_string(), age })
     }
 }
 

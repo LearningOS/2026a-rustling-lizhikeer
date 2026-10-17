@@ -53,21 +53,17 @@ impl<T> Default for Queue<T> {
 
 pub struct myStack<T>
 {
-	//TODO
 	q1:Queue<T>,
 	q2:Queue<T>
 }
 impl<T> myStack<T> {
     pub fn new() -> Self {
         Self {
-			//TODO
 			q1:Queue::<T>::new(),
 			q2:Queue::<T>::new()
         }
     }
     pub fn push(&mut self, elem: T) {
-        // Enqueue the new element first, then move the existing elements
-        // behind it, so the front of `q1` is always the newest element.
         self.q2.enqueue(elem);
         while !self.q1.is_empty() {
             let value = self.q1.dequeue().unwrap();

@@ -27,8 +27,8 @@ impl Graph {
         }
         visited.insert(v);
         visit_order.push(v);
-        for &neighbor in &self.adj[v] {
-            self.dfs_util(neighbor, visited, visit_order);
+        for &n in &self.adj[v] {
+            self.dfs_util(n, visited, visit_order);
         }
     }
 

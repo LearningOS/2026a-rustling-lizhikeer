@@ -73,40 +73,38 @@ impl<T> LinkedList<T> {
 		T: Ord,
 	{
 		let mut merged = LinkedList::new();
-		let mut a = list_a.start.take();
-		let mut b = list_b.start.take();
+		let mut left = list_a.start.take();
+		let mut right = list_b.start.take();
 
 		loop {
-			let chosen = match (a, b) {
+			let node = match (left, right) {
 				(None, None) => break,
-				(Some(pa), None) => {
-					a = unsafe { (*pa.as_ptr()).next };
-					Some(pa)
-				}
-				(None, Some(pb)) => {
-					b = unsafe { (*pb.as_ptr()).next };
-					Some(pb)
-				}
 				(Some(pa), Some(pb)) => {
 					if unsafe { (*pa.as_ptr()).val <= (*pb.as_ptr()).val } {
-						a = unsafe { (*pa.as_ptr()).next };
-						Some(pa)
+						left = unsafe { (*pa.as_ptr()).next };
+						pa
 					} else {
-						b = unsafe { (*pb.as_ptr()).next };
-						Some(pb)
+						right = unsafe { (*pb.as_ptr()).next };
+						pb
 					}
+				}
+				(Some(pa), None) => {
+					left = unsafe { (*pa.as_ptr()).next };
+					pa
+				}
+				(None, Some(pb)) => {
+					right = unsafe { (*pb.as_ptr()).next };
+					pb
 				}
 			};
 
-			if let Some(ptr) = chosen {
-				unsafe { (*ptr.as_ptr()).next = None };
-				match merged.end {
-					None => merged.start = Some(ptr),
-					Some(end) => unsafe { (*end.as_ptr()).next = Some(ptr) },
-				}
-				merged.end = Some(ptr);
-				merged.length += 1;
+			unsafe { (*node.as_ptr()).next = None };
+			match merged.end {
+				None => merged.start = Some(node),
+				Some(tail) => unsafe { (*tail.as_ptr()).next = Some(node) },
 			}
+			merged.end = Some(node);
+			merged.length += 1;
 		}
 
 		merged

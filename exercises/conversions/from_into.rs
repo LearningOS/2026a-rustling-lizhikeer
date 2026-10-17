@@ -46,21 +46,15 @@ impl From<&str> for Person {
             return Person::default();
         }
 
-        let parts: Vec<&str> = s.split(',').collect();
-        if parts.len() != 2 {
+        let mut parts = s.split(',');
+        let name = parts.next().unwrap_or("");
+        let age = parts.next();
+        if age.is_none() || parts.next().is_some() || name.is_empty() {
             return Person::default();
         }
 
-        let name = parts[0];
-        if name.is_empty() {
-            return Person::default();
-        }
-
-        match parts[1].parse::<usize>() {
-            Ok(age) => Person {
-                name: name.to_string(),
-                age,
-            },
+        match age.unwrap().parse::<usize>() {
+            Ok(age) => Person { name: name.to_string(), age },
             Err(_) => Person::default(),
         }
     }

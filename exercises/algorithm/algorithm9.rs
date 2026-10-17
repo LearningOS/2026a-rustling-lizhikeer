@@ -38,10 +38,10 @@ where
     pub fn add(&mut self, value: T) {
         self.count += 1;
         self.items.push(value);
-        self.heapify_up(self.count);
+        self.sift_up(self.count);
     }
 
-    fn heapify_up(&mut self, mut idx: usize) {
+    fn sift_up(&mut self, mut idx: usize) {
         while idx > 1 {
             let parent = self.parent_idx(idx);
             if (self.comparator)(&self.items[idx], &self.items[parent]) {
@@ -53,7 +53,7 @@ where
         }
     }
 
-    fn heapify_down(&mut self, mut idx: usize) {
+    fn sift_down(&mut self, mut idx: usize) {
         while self.children_present(idx) {
             let child = self.smallest_child_idx(idx);
             if (self.comparator)(&self.items[child], &self.items[idx]) {
@@ -123,7 +123,7 @@ where
             return Some(last);
         }
         let root = std::mem::replace(&mut self.items[1], last);
-        self.heapify_down(1);
+        self.sift_down(1);
         Some(root)
     }
 }

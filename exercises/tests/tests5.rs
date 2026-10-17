@@ -26,11 +26,7 @@
 ///
 /// The `address` must contain a mutable reference to a valid `u32` value.
 unsafe fn modify_by_address(address: usize) {
-    // TODO: Fill your safety notice of the code block below to match your
-    // code's behavior and the contract of this function. You may use the
-    // comment of the test below as your format reference.
-    // SAFETY: The caller guarantees that `address` points to a valid, uniquely
-    // borrowed `u32`, so writing through the derived raw pointer is sound.
+    // SAFETY: caller guarantees `address` is a live, uniquely borrowed u32
     unsafe {
         let ptr = address as *mut u32;
         *ptr = 0xAABBCCDD;

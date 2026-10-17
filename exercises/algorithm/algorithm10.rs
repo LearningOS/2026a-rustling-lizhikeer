@@ -27,19 +27,6 @@ impl Graph for UndirectedGraph {
     fn adjacency_table(&self) -> &HashMap<String, Vec<(String, i32)>> {
         &self.adjacency_table
     }
-    fn add_edge(&mut self, edge: (&str, &str, i32)) {
-        let (from, to, weight) = edge;
-        self.add_node(from);
-        self.add_node(to);
-        self.adjacency_table_mutable()
-            .entry(from.to_string())
-            .or_default()
-            .push((to.to_string(), weight));
-        self.adjacency_table_mutable()
-            .entry(to.to_string())
-            .or_default()
-            .push((from.to_string(), weight));
-    }
 }
 pub trait Graph {
     fn new() -> Self;
@@ -50,20 +37,16 @@ pub trait Graph {
             return false;
         }
         self.adjacency_table_mutable()
-            .insert(node.to_string(), Vec::new());
+            .insert(node.to_string(), vec![]);
         true
     }
     fn add_edge(&mut self, edge: (&str, &str, i32)) {
-        self.add_node(edge.0);
-        self.add_node(edge.1);
-        self.adjacency_table_mutable()
-            .entry(edge.0.to_string())
-            .or_default()
-            .push((edge.1.to_string(), edge.2));
-        self.adjacency_table_mutable()
-            .entry(edge.1.to_string())
-            .or_default()
-            .push((edge.0.to_string(), edge.2));
+        let (u, v, w) = edge;
+        self.add_node(u);
+        self.add_node(v);
+        let table = self.adjacency_table_mutable();
+        table.entry(u.to_string()).or_default().push((v.to_string(), w));
+        table.entry(v.to_string()).or_default().push((u.to_string(), w));
     }
     fn contains(&self, node: &str) -> bool {
         self.adjacency_table().get(node).is_some()
